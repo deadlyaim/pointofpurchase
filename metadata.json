@@ -1,0 +1,6 @@
+{
+  "name": "Tienda Minimalista con Inventario y Seguimiento",
+  "description": "Una tienda elegante y minimalista con catálogo de productos, pasarela de pagos integrada, panel administrativo con control de inventario en tiempo real y rastreo de envíos para clientes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
