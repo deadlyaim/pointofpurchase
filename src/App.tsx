@@ -30,15 +30,23 @@ export default function App() {
   // 1. Initialize states from localStorage or use presets
   useEffect(() => {
     const localProducts = localStorage.getItem('nomada_products');
+    let loadedProducts: Product[] = INITIAL_PRODUCTS;
     if (localProducts) {
       const parsed = JSON.parse(localProducts);
-      const filtered = parsed.filter((p: any) => ['prod-1', 'prod-2', 'prod-3', 'prod-4'].includes(p.id));
-      const updated = filtered.map((p: any) => {
-        const baseProduct = { 
-          ...p, 
-          price: p.id === 'prod-2' ? 19.99 : p.id === 'prod-1' ? 24.99 : p.id === 'prod-3' ? 14.99 : 14.99,
-          sizes: (p.id === 'prod-1' || p.id === 'prod-2' || p.id === 'prod-3') ? ['XS', 'S', 'M', 'L', 'XL'] : p.sizes
-        };
+      const parsedMap = new Map<string, any>(parsed.map((p: any) => [p.id, p]));
+      loadedProducts = INITIAL_PRODUCTS.map(initProd => {
+        if (parsedMap.has(initProd.id)) {
+          return parsedMap.get(initProd.id);
+        }
+        return initProd;
+      });
+    }
+    const updated = loadedProducts.map((p: any) => {
+      const baseProduct = { 
+        ...p, 
+        price: p.id === 'prod-2' ? 9.99 : p.id === 'prod-1' ? 13.99 : p.id === 'prod-3' ? 13.99 : p.id === 'prod-4' ? 8.99 : p.id === 'prod-5' ? 10.99 : p.price,
+        sizes: (p.id === 'prod-1' || p.id === 'prod-2' || p.id === 'prod-3') ? ['XS', 'S', 'M', 'L', 'XL'] : p.sizes
+      };
         if (p.id === 'prod-1') {
           return {
             ...baseProduct,
@@ -104,10 +112,6 @@ export default function App() {
       });
       setProducts(updated);
       localStorage.setItem('nomada_products', JSON.stringify(updated));
-    } else {
-      setProducts(INITIAL_PRODUCTS);
-      localStorage.setItem('nomada_products', JSON.stringify(INITIAL_PRODUCTS));
-    }
 
     const localOrders = localStorage.getItem('nomada_orders');
     if (localOrders) {
@@ -444,9 +448,6 @@ export default function App() {
                   <h2 className="font-serif text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
                     Opiniones de Clientes
                   </h2>
-                  <p className="mt-2 font-sans text-xs text-gray-500 max-w-md">
-                    Descubre fotos reales de compras verificadas y la experiencia de nuestra comunidad con los productos de PoP.
-                  </p>
                 </div>
                 <div className="mt-4 md:mt-0 flex items-center justify-center md:justify-start gap-1 bg-white border border-gray-100 px-4 py-2.5 rounded-full shadow-xs">
                   <div className="flex text-amber-400">
